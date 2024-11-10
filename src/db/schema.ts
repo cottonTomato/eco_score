@@ -1,7 +1,6 @@
 import {
   pgTable,
   uuid,
-  char,
   varchar,
   smallserial,
   smallint,
@@ -11,13 +10,13 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
-  id: char('user_id').primaryKey(),
+  id: varchar('user_id').primaryKey(),
   firstName: varchar('first_name', { length: 30 }).notNull(),
   lastName: varchar('last_name', { length: 30 }).notNull(),
 });
 
 export const userScore = pgTable('user_score', {
-  userId: char('user_id')
+  userId: varchar('user_id')
     .notNull()
     .references(() => user.id),
   score: smallint('score').notNull(),
@@ -25,7 +24,7 @@ export const userScore = pgTable('user_score', {
 });
 
 export const userCarbonFootprint = pgTable('carbon_footprint', {
-  userId: char('user_id')
+  userId: varchar('user_id')
     .notNull()
     .references(() => user.id),
   score: integer('carbon_footprint').notNull(),
@@ -49,7 +48,7 @@ export const device = pgTable('device', {
 export const userDevice = pgTable(
   'user_device',
   {
-    userId: char('user_id')
+    userId: varchar('user_id')
       .notNull()
       .references(() => user.id),
     deviceId: uuid('device_id')
@@ -83,7 +82,7 @@ export const activityTypes = pgTable('activity_types', {
 });
 
 export const userActivityScore = pgTable('user_activity_score', {
-  userId: char('user_id')
+  userId: varchar('user_id')
     .notNull()
     .references(() => user.id),
   activityType: smallserial('activity_type_id')
