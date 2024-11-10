@@ -1,48 +1,23 @@
 import {
   pgTable,
   uuid,
-  varchar,
   char,
+  varchar,
   smallserial,
-  serial,
   smallint,
   integer,
   timestamp,
   primaryKey,
 } from 'drizzle-orm/pg-core';
 
-export const country = pgTable('country', {
-  id: char('country_id', { length: 2 }).primaryKey(),
-  name: varchar('country_name', { length: 50 }),
-});
-
-export const city = pgTable('city', {
-  id: serial('city_id').primaryKey(),
-  name: varchar('city_name', { length: 50 }),
-  countryId: char('country_id').references(() => country.id),
-});
-
-export const address = pgTable('address', {
-  id: uuid('address_id').primaryKey().defaultRandom(),
-  line1: varchar('address1', { length: 50 }).notNull(),
-  line2: varchar('address2', { length: 50 }),
-  district: varchar('district', { length: 50 }).notNull(),
-  cityId: serial('city_id')
-    .notNull()
-    .references(() => city.id),
-});
-
 export const user = pgTable('user', {
-  id: uuid('user_id').primaryKey().defaultRandom(),
+  id: char('user_id').primaryKey(),
   firstName: varchar('first_name', { length: 30 }).notNull(),
   lastName: varchar('last_name', { length: 30 }).notNull(),
-  // addressId: uuid('address_id')
-  //   .notNull()
-  //   .references(() => address.id),
 });
 
 export const userScore = pgTable('user_score', {
-  userId: uuid('user_id')
+  userId: char('user_id')
     .notNull()
     .references(() => user.id),
   score: smallint('score').notNull(),
@@ -50,7 +25,7 @@ export const userScore = pgTable('user_score', {
 });
 
 export const userCarbonFootprint = pgTable('carbon_footprint', {
-  userId: uuid('user_id')
+  userId: char('user_id')
     .notNull()
     .references(() => user.id),
   score: integer('carbon_footprint').notNull(),
@@ -74,7 +49,7 @@ export const device = pgTable('device', {
 export const userDevice = pgTable(
   'user_device',
   {
-    userId: uuid('user_id')
+    userId: char('user_id')
       .notNull()
       .references(() => user.id),
     deviceId: uuid('device_id')
@@ -108,7 +83,7 @@ export const activityTypes = pgTable('activity_types', {
 });
 
 export const userActivityScore = pgTable('user_activity_score', {
-  userId: uuid('user_id')
+  userId: char('user_id')
     .notNull()
     .references(() => user.id),
   activityType: smallserial('activity_type_id')

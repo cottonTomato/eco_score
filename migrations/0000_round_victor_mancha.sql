@@ -4,25 +4,6 @@ CREATE TABLE IF NOT EXISTS "activity_types" (
 	CONSTRAINT "activity_types_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "address" (
-	"address_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"address1" varchar(50) NOT NULL,
-	"address2" varchar(50),
-	"district" varchar(50) NOT NULL,
-	"city_id" serial NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "city" (
-	"city_id" serial PRIMARY KEY NOT NULL,
-	"city_name" varchar(50),
-	"country_id" char
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "country" (
-	"country_id" char(2) PRIMARY KEY NOT NULL,
-	"country_name" varchar(50)
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "device" (
 	"device_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"device_name" varchar(20) NOT NULL,
@@ -45,48 +26,35 @@ CREATE TABLE IF NOT EXISTS "device_types" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
-	"user_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" char PRIMARY KEY NOT NULL,
 	"first_name" varchar(30) NOT NULL,
-	"last_name" varchar(30) NOT NULL,
-	"address_id" uuid NOT NULL
+	"last_name" varchar(30) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_activity_score" (
-	"user_id" uuid NOT NULL,
+	"user_id" char NOT NULL,
 	"activity_type_id" "smallserial" NOT NULL,
 	"score" smallint NOT NULL,
 	"timestamp" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "carbon_footprint" (
-	"user_id" uuid NOT NULL,
+	"user_id" char NOT NULL,
 	"carbon_footprint" integer NOT NULL,
 	"timestamp" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_device" (
-	"user_id" uuid NOT NULL,
+	"user_id" char NOT NULL,
 	"device_id" uuid NOT NULL,
 	CONSTRAINT "user_device_id" PRIMARY KEY("user_id","device_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_score" (
-	"user_id" uuid NOT NULL,
+	"user_id" char NOT NULL,
 	"score" smallint NOT NULL,
 	"timestamp" timestamp DEFAULT now()
 );
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "address" ADD CONSTRAINT "address_city_id_city_city_id_fk" FOREIGN KEY ("city_id") REFERENCES "public"."city"("city_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "city" ADD CONSTRAINT "city_country_id_country_country_id_fk" FOREIGN KEY ("country_id") REFERENCES "public"."country"("country_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "device" ADD CONSTRAINT "device_device_type_id_device_types_id_fk" FOREIGN KEY ("device_type_id") REFERENCES "public"."device_types"("id") ON DELETE no action ON UPDATE no action;
@@ -96,12 +64,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "device_reading" ADD CONSTRAINT "device_reading_device_id_device_device_id_fk" FOREIGN KEY ("device_id") REFERENCES "public"."device"("device_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "user" ADD CONSTRAINT "user_address_id_address_address_id_fk" FOREIGN KEY ("address_id") REFERENCES "public"."address"("address_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

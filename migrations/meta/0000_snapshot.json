@@ -1,5 +1,5 @@
 {
-  "id": "b4622548-e00e-4cdc-a955-17c14ee931b4",
+  "id": "4dc75a97-8c92-4cf0-8a5c-11c45f4b2ea7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -33,134 +33,6 @@
           ]
         }
       },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.address": {
-      "name": "address",
-      "schema": "",
-      "columns": {
-        "address_id": {
-          "name": "address_id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "address1": {
-          "name": "address1",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "address2": {
-          "name": "address2",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "district": {
-          "name": "district",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "city_id": {
-          "name": "city_id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "address_city_id_city_city_id_fk": {
-          "name": "address_city_id_city_city_id_fk",
-          "tableFrom": "address",
-          "tableTo": "city",
-          "columnsFrom": [
-            "city_id"
-          ],
-          "columnsTo": [
-            "city_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.city": {
-      "name": "city",
-      "schema": "",
-      "columns": {
-        "city_id": {
-          "name": "city_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "city_name": {
-          "name": "city_name",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "country_id": {
-          "name": "country_id",
-          "type": "char",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "city_country_id_country_country_id_fk": {
-          "name": "city_country_id_country_country_id_fk",
-          "tableFrom": "city",
-          "tableTo": "country",
-          "columnsFrom": [
-            "country_id"
-          ],
-          "columnsTo": [
-            "country_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.country": {
-      "name": "country",
-      "schema": "",
-      "columns": {
-        "country_id": {
-          "name": "country_id",
-          "type": "char(2)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "country_name": {
-          "name": "country_name",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -316,10 +188,9 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "char",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "first_name": {
           "name": "first_name",
@@ -332,30 +203,10 @@
           "type": "varchar(30)",
           "primaryKey": false,
           "notNull": true
-        },
-        "address_id": {
-          "name": "address_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "user_address_id_address_address_id_fk": {
-          "name": "user_address_id_address_address_id_fk",
-          "tableFrom": "user",
-          "tableTo": "address",
-          "columnsFrom": [
-            "address_id"
-          ],
-          "columnsTo": [
-            "address_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -368,7 +219,7 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "char",
           "primaryKey": false,
           "notNull": true
         },
@@ -433,7 +284,7 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "char",
           "primaryKey": false,
           "notNull": true
         },
@@ -479,7 +330,7 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "char",
           "primaryKey": false,
           "notNull": true
         },
@@ -539,7 +390,7 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "char",
           "primaryKey": false,
           "notNull": true
         },

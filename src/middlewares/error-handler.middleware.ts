@@ -20,6 +20,7 @@ export const globalErrorHandler: ErrHandler = function (err, _req, res, _next) {
         message: 'Unauthenticated',
       },
     });
+    return;
   }
 
   logger.error('Server Error: ', err);
