@@ -8,6 +8,8 @@ import { accessLogger } from './middlewares/request-logger.middleware';
 import { notFoundHandler } from './middlewares/not-found.middleware';
 import { globalErrorHandler } from './middlewares/error-handler.middleware';
 
+import { userRouter, activityRouter, deviceRouter } from './controllers/routes';
+
 import { port, allowedOrigin } from './common/config';
 
 const app = express();
@@ -26,6 +28,10 @@ app.use(accessLogger);
 app.get('/', (_req, res) => {
   res.send('<h1>Hello, World</h1>');
 });
+
+app.use('/user', userRouter);
+app.use('/activity', activityRouter);
+app.use('/device', deviceRouter);
 
 app.use(notFoundHandler);
 app.use(globalErrorHandler);

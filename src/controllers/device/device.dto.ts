@@ -13,7 +13,6 @@ export type IAddDeviceDto = z.infer<typeof addDeviceDto>;
 
 export const getDeviceDataDto = z.object({
   name: z.string(),
-  days: z.number(),
 });
 
 export type IGetDeviceDataDto = z.infer<typeof getDeviceDataDto>;

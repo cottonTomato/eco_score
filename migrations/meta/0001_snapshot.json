@@ -1,0 +1,574 @@
+{
+  "id": "9bb6a9bf-e0d0-49cc-bef8-19be47c911a2",
+  "prevId": "b4622548-e00e-4cdc-a955-17c14ee931b4",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.activity_types": {
+      "name": "activity_types",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallserial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "activity_types_name_unique": {
+          "name": "activity_types_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.address": {
+      "name": "address",
+      "schema": "",
+      "columns": {
+        "address_id": {
+          "name": "address_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "address1": {
+          "name": "address1",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address2": {
+          "name": "address2",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "district": {
+          "name": "district",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "city_id": {
+          "name": "city_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "address_city_id_city_city_id_fk": {
+          "name": "address_city_id_city_city_id_fk",
+          "tableFrom": "address",
+          "tableTo": "city",
+          "columnsFrom": [
+            "city_id"
+          ],
+          "columnsTo": [
+            "city_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.city": {
+      "name": "city",
+      "schema": "",
+      "columns": {
+        "city_id": {
+          "name": "city_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "city_name": {
+          "name": "city_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "country_id": {
+          "name": "country_id",
+          "type": "char",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "city_country_id_country_country_id_fk": {
+          "name": "city_country_id_country_country_id_fk",
+          "tableFrom": "city",
+          "tableTo": "country",
+          "columnsFrom": [
+            "country_id"
+          ],
+          "columnsTo": [
+            "country_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.country": {
+      "name": "country",
+      "schema": "",
+      "columns": {
+        "country_id": {
+          "name": "country_id",
+          "type": "char(2)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "country_name": {
+          "name": "country_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.device": {
+      "name": "device",
+      "schema": "",
+      "columns": {
+        "device_id": {
+          "name": "device_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "device_name": {
+          "name": "device_name",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "device_type_id": {
+          "name": "device_type_id",
+          "type": "smallserial",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "device_device_type_id_device_types_id_fk": {
+          "name": "device_device_type_id_device_types_id_fk",
+          "tableFrom": "device",
+          "tableTo": "device_types",
+          "columnsFrom": [
+            "device_type_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "device_device_name_unique": {
+          "name": "device_device_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "device_name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.device_reading": {
+      "name": "device_reading",
+      "schema": "",
+      "columns": {
+        "device_id": {
+          "name": "device_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_of_reading": {
+          "name": "time_of_reading",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "reading": {
+          "name": "reading",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_used": {
+          "name": "time_used",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "device_reading_device_id_device_device_id_fk": {
+          "name": "device_reading_device_id_device_device_id_fk",
+          "tableFrom": "device_reading",
+          "tableTo": "device",
+          "columnsFrom": [
+            "device_id"
+          ],
+          "columnsTo": [
+            "device_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.device_types": {
+      "name": "device_types",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallserial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wattage": {
+          "name": "wattage",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "device_types_name_unique": {
+          "name": "device_types_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user": {
+      "name": "user",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_activity_score": {
+      "name": "user_activity_score",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "activity_type_id": {
+          "name": "activity_type_id",
+          "type": "smallserial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "score": {
+          "name": "score",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_activity_score_user_id_user_user_id_fk": {
+          "name": "user_activity_score_user_id_user_user_id_fk",
+          "tableFrom": "user_activity_score",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "user_activity_score_activity_type_id_activity_types_id_fk": {
+          "name": "user_activity_score_activity_type_id_activity_types_id_fk",
+          "tableFrom": "user_activity_score",
+          "tableTo": "activity_types",
+          "columnsFrom": [
+            "activity_type_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.carbon_footprint": {
+      "name": "carbon_footprint",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "carbon_footprint": {
+          "name": "carbon_footprint",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "carbon_footprint_user_id_user_user_id_fk": {
+          "name": "carbon_footprint_user_id_user_user_id_fk",
+          "tableFrom": "carbon_footprint",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_device": {
+      "name": "user_device",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "device_id": {
+          "name": "device_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_device_user_id_user_user_id_fk": {
+          "name": "user_device_user_id_user_user_id_fk",
+          "tableFrom": "user_device",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "user_device_device_id_device_device_id_fk": {
+          "name": "user_device_device_id_device_device_id_fk",
+          "tableFrom": "user_device",
+          "tableTo": "device",
+          "columnsFrom": [
+            "device_id"
+          ],
+          "columnsTo": [
+            "device_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_device_id": {
+          "name": "user_device_id",
+          "columns": [
+            "user_id",
+            "device_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_score": {
+      "name": "user_score",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "score": {
+          "name": "score",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_score_user_id_user_user_id_fk": {
+          "name": "user_score_user_id_user_user_id_fk",
+          "tableFrom": "user_score",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

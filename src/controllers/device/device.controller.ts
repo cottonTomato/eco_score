@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 
 type GetDevicesHander = ReqHandler<IGetDevicesDto>;
 
-export const getDeviceHandler: GetDevicesHander = async function (req, res) {
+export const getDevicesHandler: GetDevicesHander = async function (req, res) {
   const userId = req.auth.userId!;
 
   const devices = await db
@@ -18,9 +18,7 @@ export const getDeviceHandler: GetDevicesHander = async function (req, res) {
 
   res.status(StatusCodes.OK).json({
     status: 'Success',
-    data: {
-      devices,
-    },
+    data: devices,
   });
 };
 
@@ -42,31 +40,30 @@ export const addDeviceHandler: AddDeviceHandler = async function (req, res) {
     await tx.insert(userDevice).values({ userId, deviceId });
   });
 
-  res.status(StatusCodes.OK).json({
+  res.status(StatusCodes.CREATED).json({
     status: 'Success',
   });
 };
 
-// type GetDeviceDataHandler = ReqHandler<IGetDeviceDataDto>;
+type GetDeviceDataHandler = ReqHandler<IGetDeviceDataDto>;
 
-// export const getDeviceDataHandler: GetDeviceDataHandler = async function (
-//   req,
-//   res
-// ) {
-//   const userId = req.auth.userId!;
-//   const { name, days } = req.body;
+export const getDeviceDataHandler: GetDeviceDataHandler = async function (
+  req,
+  res
+) {
+  const userId = req.auth.userId!;
+  const { name } = req.body;
 
-// const data = await db
-//   .select()
-//   .from(userDevice)
-//   .innerJoin(device, eq(device.id, userDevice.deviceId))
-//   .innerJoin(deviceReading, eq(device.id, deviceReading.deviceId))
-//   .where(and(eq(userDevice.userId, userId), eq(device.name, name)))
-//   .orderBy(desc(deviceReading.time))
-//   .limit(days);
+  const data = await db
+    .select()
+    .from(userDevice)
+    .innerJoin(device, eq(device.id, userDevice.deviceId))
+    .innerJoin(deviceReading, eq(device.id, deviceReading.deviceId))
+    .where(and(eq(userDevice.userId, userId), eq(device.name, name)))
+    .orderBy(desc(deviceReading.timeOfReading));
 
-// res.status(StatusCodes.OK).json({
-//   status: 'Success',
-//   data: data,
-// });
-// };
+  res.status(StatusCodes.OK).json({
+    status: 'Success',
+    data: data,
+  });
+};

@@ -8,6 +8,7 @@ import {
   smallint,
   integer,
   timestamp,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 
 export const country = pgTable('country', {
@@ -35,9 +36,9 @@ export const user = pgTable('user', {
   id: uuid('user_id').primaryKey().defaultRandom(),
   firstName: varchar('first_name', { length: 30 }).notNull(),
   lastName: varchar('last_name', { length: 30 }).notNull(),
-  addressId: uuid('address_id')
-    .notNull()
-    .references(() => address.id),
+  // addressId: uuid('address_id')
+  //   .notNull()
+  //   .references(() => address.id),
 });
 
 export const userScore = pgTable('user_score', {
@@ -59,6 +60,7 @@ export const userCarbonFootprint = pgTable('carbon_footprint', {
 export const deviceTypes = pgTable('device_types', {
   id: smallserial('id').primaryKey(),
   name: varchar('name').unique().notNull(),
+  wattage: integer('wattage').notNull(),
 });
 
 export const device = pgTable('device', {
@@ -69,19 +71,30 @@ export const device = pgTable('device', {
     .references(() => deviceTypes.id),
 });
 
-export const userDevice = pgTable('user_device', {
-  userId: uuid('user_id')
-    .notNull()
-    .references(() => user.id),
-  deviceId: uuid('device_id')
-    .notNull()
-    .references(() => device.id),
-});
+export const userDevice = pgTable(
+  'user_device',
+  {
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => user.id),
+    deviceId: uuid('device_id')
+      .notNull()
+      .references(() => device.id),
+  },
+  (table) => {
+    return {
+      userDeviceId: primaryKey({
+        name: 'user_device_id',
+        columns: [table.userId, table.deviceId],
+      }),
+    };
+  }
+);
 
 export const deviceReading = pgTable('device_reading', {
   deviceId: uuid('device_id')
     .notNull()
-    .references(() => userDevice.deviceId),
+    .references(() => device.id),
   timeOfReading: timestamp('time_of_reading', {
     withTimezone: true,
   }).defaultNow(),
